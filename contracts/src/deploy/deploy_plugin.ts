@@ -14,6 +14,10 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     // We don't use a trusted origin right now to make it easier to test.
     // For production networks it is strongly recommended to set one to avoid potential fee extraction.
     const trustedOrigin = ZeroAddress // hre.network.name === "hardhat" ? ZeroAddress : getGelatoAddress(hre.network.name)
+
+    const axelarGateway = "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    const axelarGasService = "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+
     await deploy("RelayPlugin", {
         from: deployer,
         args: [trustedOrigin, relayMethod],
@@ -31,6 +35,13 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     await deploy("RecoveryWithDelayPlugin", {
         from: deployer,
         args: [recoverer],
+        log: true,
+        deterministicDeployment: true,
+    });
+
+    await deploy("MultiChainPlugin", {
+        from: deployer,
+        args: [axelarGateway, axelarGasService],
         log: true,
         deterministicDeployment: true,
     });

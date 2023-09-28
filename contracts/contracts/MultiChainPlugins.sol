@@ -8,7 +8,7 @@ import {SafeTransaction, SafeProtocolAction} from "@safe-global/safe-core-protoc
 import {_getFeeCollectorRelayContext, _getFeeTokenRelayContext, _getFeeRelayContext} from "@gelatonetwork/relay-context/contracts/GelatoRelayContext.sol";
 import { IAxelarGateway } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol';
 import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
-import { IInterchainProposalSender } from './interfaces/IInterchainProposalSender.sol';
+import { IInterchainSender } from './interfaces/IInterchainSender.sol';
 import { InterchainCalls } from './lib/InterchainCalls.sol';
 
 contract MultiChainPlugin is BasePluginWithEventMetadata, IInterchainSender {
@@ -64,8 +64,35 @@ contract MultiChainPlugin is BasePluginWithEventMetadata, IInterchainSender {
         }
     }
 
-    function executeFromPlugin(ISafeProtocolManager manager, ISafe safe, bytes calldata data) external {
+    function sendCrossChainTx(
+        string memory destinationChain,
+        string memory destinationContract,
+        InterchainCalls.Call[] calldata calls
+    ) external payable override {
+        _sendCrossChainTx(InterchainCalls.InterchainCall(destinationChain, destinationContract, msg.value, calls));
+    }
+
+    function sendCrossChainTxs(InterchainCalls.InterchainCall[] calldata interchainCalls) external payable override {
+        revertIfInvalidFee(interchainCalls);
+
+        for (uint i = 0; i < interchainCalls.length; ) {
+            _sendCrossChainTx(interchainCalls[i]);
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
+    function executeFromPlugin(
+        ISafeProtocolManager manager, 
+        ISafe safe, 
+        SafeTransaction calldata safetx,
+        string memory destinationChain,
+        string memory destinationContract,
+        InterchainCalls.Call[] calldata calls
+    ) external payable {        
         // Execute the contract on source chain
+        manager.executeTransaction(safe, safetx);
         
         // Send cross-chain message to the destination chain
         _sendCrossChainTx(InterchainCalls.InterchainCall(destinationChain, destinationContract, msg.value, calls));

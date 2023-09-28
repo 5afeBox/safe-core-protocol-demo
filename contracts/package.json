@@ -69,5 +69,8 @@
     "scripts",
     "test",
     "artifacts"
-  ]
+  ],
+  "dependencies": {
+    "@axelar-network/axelar-gmp-sdk-solidity": "^5.3.3"
+  }
 }

@@ -12,6 +12,11 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.9.2.tgz#60111a5d9db45b2e5cbb6231b0bb8d97e8659316"
   integrity sha512-0h+FrQDqe2Wn+IIGFkTCd4aAwTJ+7834Ek1COohCyV26AXhwQ7WQaz+4F/nLOeVl/3BtWHOHLPsq46V8YB46Eg==
 
+"@axelar-network/axelar-gmp-sdk-solidity@^5.3.3":
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelar-gmp-sdk-solidity/-/axelar-gmp-sdk-solidity-5.3.3.tgz#8dcd7fde107d1e1c8b7810f224a80b058fc6cc16"
+  integrity sha512-QG2u1OkPrHjVfJo0ZpvmhHvbWwNXl7CQgM6lJa2ZAsZ6eRoKhEQ406zsgIOd2MtvgG4kH8vPHTb0K3y5ovMBIA==
+
 "@babel/code-frame@^7.0.0":
   version "7.22.5"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.22.5.tgz#234d98e1551960604f1246e6475891a570ad5658"
